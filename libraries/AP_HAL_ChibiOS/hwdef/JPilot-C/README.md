@@ -17,31 +17,19 @@ Developed and distributed by [Flyfocus](https://flyfocus.pl/avionics/)
 
 ## Pinout
 
-Connector pinouts follow [DS-009 Pixhawk Connector Standard](https://github.com/pixhawk/Pixhawk-Standards/blob/master/DS-009%20Pixhawk%20Connector%20Standard.pdf)
-
-|Connector|Pin 1|Pin 2|Pin 3|Pin 4|Pin 5|Pin 6|Pin 7|Pin 8|Pin 9|Pin 10|
-|---------|-----|-----|-----|-----|-----|-----|-----|-----|-----|------|
-|Telem1   |     |     |     |     |     |     |     |     |     |      |
-|Telem2   |     |     |     |     |     |     |     |     |     |      |
-|GPS1     |     |     |     |     |     |     |     |     |     |      |
-|GPS2     |     |     |     |     |     |     |     |     |     |      |
-|CAN1     |     |     |     |     |     |     |     |     |     |      |
-|CAN2     |     |     |     |     |     |     |     |     |     |      |
-|I2C      |     |     |     |     |     |     |     |     |     |      |
-|Power1   |     |     |     |     |     |     |     |     |     |      |
-|Power2   |     |     |     |     |     |     |     |     |     |      |
+JPilot-C is a family of firmware-compatible modules, pinout for peripheral hardware depends on the specific adapter board used.
 
 ## UART Mapping
 
-|Serial#|Protocol|Port  |Notes|
-|-------|--------|------|-----|
-|Serial0|OTG1    |USB   |     |
-|Serial1|        |UART7 |     |
-|Serial2|        |USART1|     |
-|Serial3|        |USART2|     |
-|Serial4|        |USART3|     |
-|Serial5|        |UART8 |     |
-|Serial6|        |UART4 |     |
+|Serial#|Port      |
+|-------|----------|
+|Serial0|USB (OTG1)|
+|Serial1|UART7     |
+|Serial2|USART1    |
+|Serial3|USART2    |
+|Serial4|USART3    |
+|Serial5|UART8     |
+|Serial6|UART4     |
 
 ## CAN Ports
 
@@ -63,21 +51,22 @@ Channels within the same group need to use the same output rate. If any channel 
 
 ## RC Input
 
-Using the RCin pin will support all unidirectional RC protocols.
+Any of the serial ports can be used for a bidirectional RC connection.
 
 ## Battery Monitor
 
-The board has internal voltage sensors and connection for external current sensor on the "Power1" and "Power2" ports.
+The board has internal voltage sensors and connection for external current sensors, able to monitor two batteries.
 The default battery parameters are:
 
 - BATT_MONITOR 4
 - BATT_VOLT_PIN 10
 - BATT_CURR_PIN 11
 - BATT_VOLT_MULT 11
+- BATT_AMP_PERVLT 40
 - BATT2_VOLT_PIN 18
 - BATT2_CURR_PIN 7
 - BATT2_VOLT_MULT 11
-- BATT_AMP_PERVLT 40
+- BATT2_AMP_PERVLT 40
 
 ## Analog pins
 
