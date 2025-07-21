@@ -72,9 +72,9 @@ The default battery parameters are:
 
 These analog pins are used in addition to battery monitoring:
 
-- Servo rail voltage (scale 1:3, pin PC5)
-- VDD 5V supply voltage (scale 1:2, pin PA5)
-- Pressure sensor (scale 1:2, pin PC4)
+- Servo rail voltage (up to 10V, pin PC5)
+- VDD 5V supply voltage (up to 6V, pin PA5)
+- Analog airspeed (up to 6V, pin PC4), note that an I2C module is recommended instead
 
 ## Compass
 
