@@ -3,6 +3,9 @@
 
 bool ModeGuided::_enter()
 {
+#if HAL_SOARING_ENABLED
+    plane.g2.soaring_controller.init_cruising();
+#endif
     plane.guided_throttle_passthru = false;
     /*
       when entering guided mode we set the target as the current
@@ -94,6 +97,33 @@ void ModeGuided::update()
         SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, plane.guided_state.forced_throttle);
 
     } else {
+#if HAL_SOARING_ENABLED
+        static bool soaring_was_active = false;
+
+        if (plane.g2.soaring_controller.is_active()) 
+        {
+            soaring_was_active = true;
+            if (plane.g2.soaring_controller.get_throttle_suppressed()) 
+            {
+                // we're in soaring mode with throttle suppressed
+                plane.set_target_altitude_current();
+            } 
+            else 
+            {
+                // we're in soaring mode climbing back to altitude. Set target to SOAR_ALT_CUTOFF plus 10m to ensure we positively climb
+                // through SOAR_ALT_CUTOFF, thus triggering throttle suppression and return to glide.
+                plane.target_altitude.amsl_cm = 100*plane.g2.soaring_controller.get_alt_cutoff() + 1000 + AP::ahrs().get_home().alt;
+            }
+        }
+        else if (soaring_was_active == true)
+        {
+            soaring_was_active = false;
+            
+            Location loc = plane.next_WP_loc;
+            loc.set_alt_cm(plane.current_loc.alt, Location::AltFrame::ABSOLUTE);
+            plane.set_guided_WP(loc);
+        }
+#endif
         // TECS control
         plane.calc_throttle();
 
@@ -197,6 +227,12 @@ void ModeGuided::update_target_altitude()
     } else 
 #endif // AP_PLANE_OFFBOARD_GUIDED_SLEW_ENABLED
         {
+#if HAL_SOARING_ENABLED
+        if (plane.g2.soaring_controller.suppress_throttle()) 
+        {
+            return;
+        }
+#endif
         Mode::update_target_altitude();
     }
 }
