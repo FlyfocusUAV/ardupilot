@@ -430,7 +430,9 @@ void Plane::update_fbwb_speed_height(void)
         change_target_altitude(alt_change_cm);
 
 #if HAL_SOARING_ENABLED
+        static bool soaring_was_active = false;
         if (g2.soaring_controller.is_active()) {
+            soaring_was_active = true;
             if (g2.soaring_controller.get_throttle_suppressed()) {
                 // we're in soaring mode with throttle suppressed
                 set_target_altitude_current();
@@ -439,6 +441,11 @@ void Plane::update_fbwb_speed_height(void)
                 // through SOAR_ALT_CUTOFF, thus triggering throttle suppression and return to glide.
                 target_altitude.amsl_cm = 100*plane.g2.soaring_controller.get_alt_cutoff() + 1000 + AP::ahrs().get_home().alt;
             }
+        }
+        else if (soaring_was_active == true)
+        {
+            soaring_was_active = false;
+            plane.set_target_altitude_current();
         }
 #endif
 
