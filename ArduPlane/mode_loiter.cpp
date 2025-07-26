@@ -3,6 +3,9 @@
 
 bool ModeLoiter::_enter()
 {
+#if HAL_SOARING_ENABLED
+    plane.g2.soaring_controller.init_cruising();
+#endif
     plane.do_loiter_at_location();
     plane.setup_terrain_target_alt(plane.next_WP_loc);
 
@@ -25,6 +28,32 @@ void ModeLoiter::update()
         plane.update_fbwb_speed_height();
     } else {
         plane.calc_nav_pitch();
+#if HAL_SOARING_ENABLED
+        static bool soaring_was_active = false;
+        
+        if (plane.g2.soaring_controller.is_active()) 
+        {
+            soaring_was_active = true;
+            if (plane.g2.soaring_controller.get_throttle_suppressed()) 
+            {
+                // we're in soaring mode with throttle suppressed
+                plane.set_target_altitude_current();
+            } 
+            else 
+            {
+                // we're in soaring mode climbing back to altitude. Set target to SOAR_ALT_CUTOFF plus 10m to ensure we positively climb
+                // through SOAR_ALT_CUTOFF, thus triggering throttle suppression and return to glide.
+                plane.target_altitude.amsl_cm = 100*plane.g2.soaring_controller.get_alt_cutoff() + 1000 + AP::ahrs().get_home().alt;
+            }
+        }
+        else if (soaring_was_active == true)
+        {
+            soaring_was_active = false;
+            
+            plane.set_target_altitude_current();
+            plane.next_WP_loc.set_alt_cm(plane.target_altitude.amsl_cm, Location::AltFrame::ABSOLUTE);
+        }
+#endif
         plane.calc_throttle();
     }
 
