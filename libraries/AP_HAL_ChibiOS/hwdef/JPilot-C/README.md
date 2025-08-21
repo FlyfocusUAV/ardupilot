@@ -21,7 +21,7 @@ Developed and distributed by [Flyfocus](https://flyfocus.pl/avionics/)
 
 JPilot-C is a family of firmware-compatible modules, the mezzanine connector uses the following pins:
 
-![connector orientation](./JPilot-C_pinout.svg)
+![connector orientation](./JPilot-C_pinout.png)
 
 | Pin Number | Pin Name | Pin Function |
 | --- | --- | --- |
