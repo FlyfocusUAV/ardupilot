@@ -68,6 +68,7 @@ const AP_Param::GroupInfo AP_Airspeed_Params::var_info[] = {
     // @Increment: 0.1
     // @User: Advanced
     AP_GROUPINFO("RATIO", 4, AP_Airspeed_Params, ratio, 2),
+#endif // HAL_BUILD_AP_PERIPH
 
     // @Param: PIN
     // @DisplayName: Airspeed pin
@@ -76,7 +77,6 @@ const AP_Param::GroupInfo AP_Airspeed_Params::var_info[] = {
     // @Range: -1 127
     // @User: Advanced
     AP_GROUPINFO("PIN", 5, AP_Airspeed_Params, pin, 0),
-#endif // HAL_BUILD_AP_PERIPH
 
 #if AP_AIRSPEED_AUTOCAL_ENABLE
     // @Param: AUTOCAL

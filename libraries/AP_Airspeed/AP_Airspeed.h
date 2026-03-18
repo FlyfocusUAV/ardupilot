@@ -28,9 +28,9 @@ public:
     AP_Float ratio;
 #endif
     AP_Float psi_range;
+    AP_Int8  pin;
 #ifndef HAL_BUILD_AP_PERIPH
     AP_Int8  use;
-    AP_Int8  pin;
 
     enum class SkipCalType : int8_t {
         // Do not skip boot calibration, this is the default
