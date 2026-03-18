@@ -1,0 +1,65 @@
+MCU STM32G4xx STM32G491xx
+
+FLASH_RESERVE_START_KB    36
+
+STORAGE_FLASH_PAGE        16
+define HAL_STORAGE_SIZE   1800
+
+APJ_BOARD_ID              AP_HW_BirdCANdy
+
+env AP_PERIPH             1
+
+define STM32_HSE_BYPASS
+OSCILLATOR_HZ             16000000
+STM32_ST_USE_TIMER        15
+define CH_CFG_ST_FREQUENCY 1000000
+define CH_CFG_ST_RESOLUTION 16
+
+FLASH_SIZE_KB             512
+
+SERIAL_ORDER              EMPTY USART2
+PB3  USART2_TX            USART2 SPEED HIGH
+PB4  USART2_RX            USART2 SPEED HIGH
+
+PA11   CAN1_RX            CAN1
+PA12   CAN1_TX            CAN1
+PB5    GPIO_CAN1_SILENT   OUTPUT PUSHPULL SPEED_LOW LOW
+define CAN_ORDER          1
+
+PA13   JTMS-SWDIO         SWD
+PA14   JTCK-SWCLK         SWD
+
+define HAL_USE_ADC             TRUE
+define STM32_ADC_USE_ADC1      TRUE
+# This actually checks if it's defined, not the value;
+# with the define, the messages aren't affected by pin
+#define HAL_DISABLE_ADC_DRIVER FALSE
+
+#define DMA_RESERVE_SIZE       512
+#DMA_PRIORITY ADC*
+
+# strip out everything else
+define HAL_USE_RTC             FALSE
+define HAL_USE_I2C FALSE
+define HAL_NO_GPIO_IRQ
+define HAL_NO_TIMER_THREAD
+define HAL_NO_MONITOR_THREAD
+define HAL_NO_LOGGING
+
+# ADC for airspeed
+# Adding NODMA here doesn't change anything
+PA1 PRESSURE_SENS ADC1 SCALE(1)
+define HAL_DEFAULT_AIRSPEED_PIN 2
+
+# Looks like it doesn't change anything, type stays 2 (analog)
+define HAL_AIRSPEED_TYPE_DEFAULT 2
+
+define AIRSPEED_MAX_SENSORS 1
+define AP_AIRSPEED_ANALOG_ENABLED 1
+define AP_PERIPH_AIRSPEED_ENABLED 1
+
+
+
+define CAN_APP_NODE_NAME    "FF HighSpeed G4"
+
+env ROMFS_UNCOMPRESSED     True
